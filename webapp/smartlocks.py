@@ -39,7 +39,7 @@ def homepage():
 def unlocked():
 	radio.write("Unlocked");
 	return render_template("index.html")
-	
+
 @app.route('/zones')
 def zones():
 	return render_template("zoning.html")
@@ -52,7 +52,7 @@ def schedules():
 def all_locks():
 	return render_template("all_locks.html")
 
-	
+
 
 @ask.launch
 def start_skill():
