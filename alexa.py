@@ -5,8 +5,14 @@ import requests
 import unidecode
 import flask_sqlalchemy as SQLAlchemy
 from dbschema import db, Lock, Zone, Person
+from RadioControl import init_radio, unlock_function
+
+
 app = Flask(__name__)
 ask = Ask(app,"/child_locks")
+#init_radio() This line commented out due to no longer being able to prototype on RPi
+
+
 #Startup Intent for no specified action
 @ask.launch
 def start_skill():
@@ -33,7 +39,7 @@ def unlock_cabinet(color):
 			if person == authorized_person.amazon_id:
 				for lock in locks:
 					if (color.upper()==lock.lock_name.upper()):
-						#insert Radio code control here
+						#unlock_function(color.upper()) This line commented out due to COVID19
 						return_msg = 'Unlocked cabinet, {}'.format(lock.lock_name)
 						return statement(return_msg)
 				else:
