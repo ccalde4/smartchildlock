@@ -69,18 +69,42 @@
 
       <div class="container-fluid">
         <h1 class="mt-4">All Locks</h1>
-        <p>Your locks:</p>
-        <ul>
-          <li><a href = "unlock">red</a></li> <button> Delete </button>
-          <li><a href = "unlock">green</a></li><button> Delete </button>
-          <li><a href = "unlock">blue</a></li> <button> Delete </button>
-          <li><a href = "unlock">purple</a></li> <button> Delete </button>
-          <li><a href = "unlock">orange</a></li> <button> Delete </button>
-          <li><a href = "unlock">yellow</a></li> <button> Delete </button>
-          <li><a href = "unlock">black</a></li> <button> Delete </button>
-          <br> </br>
-            <br> </br>
-              <br> </br>
+        <style>
+          a:hover{
+            color: white;
+            text-decoration-color: none:
+          }
+          .button{
+            display: inline-block;
+            background-color: #333333;
+            color:white;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none !important;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            cursor: pointer;
+            outline: none;
+          }
+          .button:hover{
+            background-color: #111111;
+          }
+
+          ul{
+            list-style-type: none;
+            text-align: left;
+            margin: 0;
+            margin-bottom: 20px;
+            padding: 0;
+          }
+        </style>
+
+          {% for lock in locks %}
+          <li>
+            <a href = "{{url_for('unlocked',lock=lock.lock_name)}}" class = "button">{{lock.lock_name}}</a></li>
+          {% endfor %}
+        </ul>
           <button> Add Device </button>
       </div>
     </div>

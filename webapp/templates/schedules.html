@@ -70,9 +70,16 @@
       <div class="container-fluid">
         <h1 class="mt-4">Schedules</h1>
         <p>Your schedules:</p>
-        <ul>
-          <li><a href = "unlock">Schedule 1</a></li> <button> Add Device </button> <button> Edit Time </button>
-          <li><a href = "unlock">Schedule 2</a></li> <button> Add Device </button> <button> Edit Time </button>
+        <table>
+          {% for schedule in schedules%}
+          <tr>
+            <td><a href = "schedule" class= "button"> {{schedule.schedule_name}}</a></td>
+            <td>{{schedule.date}}</td>
+            <td>{{schedule.time}}</td>
+            <td>{{schedule.zone_id}}</td>
+          </tr>
+          {% endfor %}
+        </table>
       </div>
       <button> Add Schedule</button> <button> Delete Schedule</button>
 

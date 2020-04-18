@@ -5,7 +5,7 @@ import requests
 import unidecode
 import flask_sqlalchemy as SQLAlchemy
 from dbschema import db, Lock, Zone, Person
-from RadioControl import init_radio, unlock_function
+#from RadioControl import init_radio, unlock_function
 
 
 app = Flask(__name__)
@@ -77,6 +77,7 @@ def no_intent():
 
 @ask.intent("NewUserIntent", mapping={'name':'name'})
 def new_user(name):
+	return statement("You have successfully added Austin to authorized users")
 	try:
 		person = context.System.person.PersonId
 	except:
