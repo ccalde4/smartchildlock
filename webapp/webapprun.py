@@ -13,27 +13,39 @@ from dbschema import db, Lock, Zone, Person, Schedule
 app = Flask(__name__)
 
 locks=Lock.query.all()
-initial_usage = [0]*len(locks)
-print(initial_usage)
+lock_names = [0]* len(locks)
+j = 0;
+for i in locks:
+	lock_names[j] = locks[j].lock_name
+	j= j+1
+lock_usage = {i: 0 for i in lock_names}
+print(lock_names)
+print(lock_usage)
 
 @app.route('/')
 def homepage():
-	return render_template("index.html")
+	frequent_locks = sorted(lock_usage, key = lock_usage.get,reverse = True)[:3]
+	print(frequent_locks)
+	return render_template("index.html", title='Frequent Locks', frequent_locks=frequent_locks)
 
 @app.route('/unlock<string:lock>')
 def unlocked(lock):
 	print(lock)
+	lock_usage[lock]= lock_usage[lock]+1;
+	print(lock_usage)
 	locks = Lock.query.all()
 	return redirect(url_for("all_locks"))
 
 @app.route('/zones')
 def zones():
-	return render_template("zoning.html")
+	zones = Zone.query.all()
+	return render_template("zoning.html", title = 'Zones', zones = zones)
 
 @app.route('/schedules')
 def schedules():
 	schedules = Schedule.query.all()
-	return render_template("schedules.html", title = 'All Schedules', schedules = schedules)
+	zones = Zone.query.all()
+	return render_template("schedules.html", title = 'All Schedules', schedules = schedules, zones = zones)
 
 @app.route('/all_locks')
 def all_locks():

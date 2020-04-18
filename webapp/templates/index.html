@@ -69,10 +69,43 @@
 
       <div class="container-fluid">
         <h1 class="mt-4">Frequent</h1>
+        <style>
+        a:hover{
+          color: white;
+          text-decoration-color: none:
+        }
+        .button{
+          display: inline-block;
+          background-color: #333333;
+          color:white;
+          padding: 10px 15px;
+          text-align: center;
+          text-decoration: none !important;
+          display: inline-block;
+          font-size: 14px;
+          margin: 4px 2px;
+          cursor: pointer;
+          outline: none;
+        }
+        .button:hover{
+          background-color: #111111;
+        }
+
+        ul{
+          list-style-type: none;
+          text-align: left;
+          margin: 0;
+          margin-bottom: 20px;
+          padding: 0;
+        }
+        </style>
         <p>Your frequently accessed locks:</p>
         <ul>
-          <li><a href = "unlock">red</a></li>
-          <li><a href = "unlock">green</a></li>
+          {% for i in frequent_locks %}
+          <li><a href = "{{url_for('unlocked',lock = i)}}" class = "button">{{i}}</a></li>
+          {% endfor %}
+        </ul>
+
       </div>
     </div>
     <!-- /#page-content-wrapper -->

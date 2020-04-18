@@ -92,20 +92,34 @@
           }
 
           ul{
-            list-style-type: none;
+            list-style-type: none !important;
             text-align: left;
             margin: 0;
             margin-bottom: 20px;
             padding: 0;
           }
+          button{
+            display: inline-block;
+            background-color: green;
+            color:white;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none !important;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            cursor: pointer;
+            outline: none;
+          }
         </style>
-
+        <ul>
           {% for lock in locks %}
           <li>
             <a href = "{{url_for('unlocked',lock=lock.lock_name)}}" class = "button">{{lock.lock_name}}</a></li>
           {% endfor %}
         </ul>
-          <button> Add Device </button>
+        <br>
+          <button > Add Device </button> <button style="background-color: red;"> Delete Device </button>
       </div>
     </div>
     <!-- /#page-content-wrapper -->

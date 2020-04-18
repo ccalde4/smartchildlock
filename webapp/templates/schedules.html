@@ -70,13 +70,42 @@
       <div class="container-fluid">
         <h1 class="mt-4">Schedules</h1>
         <p>Your schedules:</p>
+        <style>
+        table{
+          font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+        th
+        {
+          padding-top: 12px;
+          padding-bottom: 12px;
+          text-align:left;
+          background-color:#333333;
+          color:white;
+        }
+
+        tr:nth-child(even){background-color: #f2f2f2;}
+        tr:hover {background-color: #ddd;}
+        td
+        {
+          border: 1px solid #ddd;
+          padding: 8px;
+        }
+        a{
+          font-family: "Trebuchet MS", Arial, helvetica, sans-serif;
+          color:black;
+        }
+        </style>
         <table>
+        <th>Schedule Name</th>
+        <th>Days</th>
+        <th>Time</th>
           {% for schedule in schedules%}
           <tr>
             <td><a href = "schedule" class= "button"> {{schedule.schedule_name}}</a></td>
-            <td>{{schedule.date}}</td>
-            <td>{{schedule.time}}</td>
-            <td>{{schedule.zone_id}}</td>
+            <td><a href = "schedule" class= "button">{{schedule.date}}</a></td>
+            <td><a href = "schedule" class= "button">{{schedule.time}}</a></td>
           </tr>
           {% endfor %}
         </table>
