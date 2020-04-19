@@ -104,25 +104,102 @@ def Add_zone():
 	locks=Lock.query.all()
 	return render_template("add_zone.html", title = "Add Zone",locks = locks)
 
+@app.route('/Delete_zone')
+def Delete_zone():
+	zones = Zone.query.all()
+	return render_template("delete_zone.html",title="Delete Zone", zones = zones)
+
 @app.route('/zone_add_db', methods=['POST'])
 def zone_add_db():
 	new_zone_name = request.form.get('name')
 	new_zone_locks = request.form.getlist("checkbox")
-	new_zone_locks_indeces = []
+	new_zone_locks_string = []
 	for i in new_zone_locks:
-		lock = Lock.query.filter_by(lock_name =i).first()
-		print(lock)
-		new_zone_locks_indeces.append(lock.id)
-	print(new_zone_locks_indeces)
-	update_lock_zones(new_zone_locks_indeces)
+		i = i.replace("\r",'')
+		new_zone_locks_string.append(i)
+	print(new_zone_locks_string)
 	new_zone = Zone(zone_name=new_zone_name)
-	print(new_zone)
+	db.session.add(new_zone)
+	db.session.commit()
+	update_lock_zones(new_zone_locks_string, new_zone)
 	return redirect(url_for("zones"))
 
-def update_lock_zones(new_zone_locks_indeces):
-	for i in new_zone_locks_indeces:
-		update_lock = Lock.query.filter_by(id = i)
-		print(update_lock)
+@app.route('/zone_delete_db', methods=['GET'])
+def zone_delete_db():
+	delete_zone_name = request.args.get('zone','')
+	delete_zone = Zone.query.filter_by(zone_name = delete_zone_name).first()
+	db.session.delete(delete_zone)
+	db.session.commit()
+	return redirect(url_for("zones"))
+
+@app.route('/Edit_zone<string:zone>')
+def Edit_zone(zone):
+	edit_zone = Zone.query.filter_by(zone_name = zone).first()
+	all_locks = Lock.query.all()
+	return render_template("edit_zone.html", title = "Edit Zone",locks= all_locks, zone = edit_zone )
+
+@app.route('/Unlock_zone<string:zone>')
+def zone_unlock(zone):
+	zone_to_unlock = Zone.query.filter_by(zone_name = zone).first()
+	locks_to_unlock = Lock.query.filter_by(zone_id = zone_to_unlock.id).all()
+	for i in locks_to_unlock:
+		print(i.lock_name)
+		#unlock_function(i.lock_name) commented out due to covid 19
+	return redirect(url_for("zones"))
+
+
+@app.route('/zone_edit_db', methods=['POST'])
+def zone_edit_db():
+	old_name = request.form.get('oldname')
+	name = request.form.get('name')
+	locks = request.form.getlist("checkbox")
+	new_locks_string = []
+	for i in locks:
+		i = i.replace("\r",'')
+		new_locks_string.append(i)
+	update_zone = Zone.query.filter_by(zone_name = old_name).first()
+	update_zone.zone_name = name
+	db.session.commit()
+	id = update_zone.id
+	old_locks = Lock.query.filter_by(zone_id=id).all()
+	for i in old_locks:
+		print(i.lock_name)
+	update_edit_zone_locks(old_locks, new_locks_string, update_zone)
+	return redirect(url_for("zones"))
+
+
+
+def update_lock_zones(new_zone_locks, new_zone):
+	for i in new_zone_locks:
+		try:
+			update_lock = Lock.query.filter_by(lock_name = i).one()
+			update_lock.zone_id = new_zone.id
+		except:
+			print("did not work")
+		else:
+			db.session.commit()
+
+def update_edit_zone_locks(old_locks, new_locks, update_zone):
+	for i in old_locks:
+		try:
+			print(i.zone_id)
+			i.zone_id = None
+			print(i.zone_id)
+		except:
+			print("error")
+		else:
+			db.session.commit()
+
+	for i in new_locks:
+		try:
+			new_lock = Lock.query.filter_by(lock_name =i).first()
+			new_lock.zone_id = update_zone.id
+			print(new_lock)
+		except:
+			print("error 2")
+		else:
+			db.session.commit()
+
 
 if __name__=='__main__':
 	app.run(debug=True)
