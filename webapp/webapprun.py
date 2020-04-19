@@ -51,7 +51,11 @@ def zones():
 def schedules():
 	schedules = Schedule.query.all()
 	zones = Zone.query.all()
-	return render_template("schedules.html", title = 'All Schedules', schedules = schedules, zones = zones)
+	zone_name = []
+	for i in zones:
+		zone_name.append(i.zone_name)
+	print(zone_name)
+	return render_template("schedules.html", title = 'All Schedules', schedules = schedules, zones = zone_name)
 
 @app.route('/all_locks')
 def all_locks():
@@ -166,6 +170,15 @@ def zone_edit_db():
 		print(i.lock_name)
 	update_edit_zone_locks(old_locks, new_locks_string, update_zone)
 	return redirect(url_for("zones"))
+
+@app.route('/Add_schedule')
+def Add_schedule():
+	zones = Zone.query.all()
+	return render_template("add_schedule.html", zones = zones)
+
+@app.route('/schedule_add_db', methods=['POST'])
+def schedule_add_db():
+	return redirect(url_for("schedules"))
 
 
 

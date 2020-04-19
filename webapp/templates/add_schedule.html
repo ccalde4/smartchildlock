@@ -68,69 +68,50 @@
       </nav>
 
       <div class="container-fluid">
-        <h1 class="mt-4">Schedules</h1>
-        <p>Lock schedules:</p>
         <style>
-        table{
-          font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-          border-collapse: collapse;
-          width: 100%;
-        }
-        th
-        {
-          padding-top: 12px;
-          padding-bottom: 12px;
-          text-align:left;
-          background-color:#333333;
-          color:white;
-        }
+          .weekDays-selector input {
+    display: none!important;
+  }
 
-        tr:nth-child(even){background-color: #f2f2f2;}
-        tr:hover {background-color: #ddd;}
-        td
-        {
-          border: 1px solid #ddd;
-          padding: 8px;
-        }
-        a{
-          font-family: "Trebuchet MS", Arial, helvetica, sans-serif;
-          color:black;
-        }
-        .button2{
-          display: inline-block;
-          background-color: #333333;
-          color:white;
-          padding: 10px 15px;
-          text-align: center;
-          text-decoration: none !important;
-          display: inline-block;
-          font-size: 14px;
-          margin: 4px 2px;
-          cursor: pointer;
-          outline: none;
-        }
-        .button2:hover{
-          color:black;
-        }
-        </style>
-        <table>
-        <th>Schedule Name</th>
-        <th>Days</th>
-        <th>Time</th>
-        <th>Zone</th>
-          {% for schedule in schedules%}
-          <tr>
-            <td><a href = "schedule" class= "button"> {{schedule.schedule_name}}</a></td>
-            <td><a href = "schedule" class= "button">{{schedule.date}}</a></td>
-            <td><a href = "schedule" class= "button">{{schedule.time}}</a></td>
-            <td><a href = "schedule" class = "button">{{zones[schedule.zone_id-1]}}</a></td>
-          </tr>
-          {% endfor %}
-        </table>
+  .weekDays-selector input[type=checkbox] + label {
+    display: inline-block;
+    border-radius: 6px;
+    background: #dddddd;
+    height: 40px;
+    width: 30px;
+    margin-right: 3px;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .weekDays-selector input[type=checkbox]:checked + label {
+    background: black;
+    color: #ffffff;
+  }
+          </style>
         <br>
-          <a href="/Add_schedule" class = "button2" style="background-color: green"> Add Schedule </a> <a href="/Delete_schedule" class = "button2" style="background-color: red"> Delete Schedule </a>
-      </div>
-
+        <form method="POST" action="/schedule_add_db">
+          <label for="name">New Schedule Name:</label><br>
+          <input type="text" id="name" name="name"><br><br>
+          <div class="weekDays-selector">
+    <input type="checkbox" id="weekday-mon" class="weekday" />
+    <label for="weekday-mon">M</label>
+    <input type="checkbox" id="weekday-tue" class="weekday" />
+    <label for="weekday-tue">Tu</label>
+    <input type="checkbox" id="weekday-wed" class="weekday" />
+    <label for="weekday-wed">W</label>
+    <input type="checkbox" id="weekday-thu" class="weekday" />
+    <label for="weekday-thu">Th</label>
+    <input type="checkbox" id="weekday-fri" class="weekday" />
+    <label for="weekday-fri">F</label>
+    <input type="checkbox" id="weekday-sat" class="weekday" />
+    <label for="weekday-sat">Sat</label>
+    <input type="checkbox" id="weekday-sun" class="weekday" />
+    <label for="weekday-sun">Sun</label>
+  </div>
+          <input type="submit" value="Submit"><br><br>
+          </form>
     </div>
     <!-- /#page-content-wrapper -->
 
