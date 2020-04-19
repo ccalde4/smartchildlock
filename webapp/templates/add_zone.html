@@ -68,45 +68,16 @@
       </nav>
 
       <div class="container-fluid">
-        <h1 class="mt-4">Zones</h1>
-        <style>
-        a:hover{
-          color: white;
-          text-decoration-color: none:
-        }
-        .button{
-          display: inline-block;
-          background-color: #333333;
-          color:white;
-          padding: 10px 15px;
-          text-align: center;
-          text-decoration: none !important;
-          display: inline-block;
-          font-size: 14px;
-          margin: 4px 2px;
-          cursor: pointer;
-          outline: none;
-        }
-        .button:hover{
-          background-color: #111111;
-        }
-
-        ul{
-          list-style-type: none !important;
-          text-align: left;
-          margin: 0;
-          margin-bottom: 20px;
-          padding: 0;
-        }
-        </style>
-        <p>Your zones:</p>
-        {% for i in zones %}
-        <ul>
-          <li><a href = "Edit_zone" class = "button">{{i.zone_name}}</a></li>
-        </ul>
-        {% endfor %}
-          <a href="/Add_zone" class = "button" style="background-color: green"> Add Zone </a> <a href="/Delete_zone" class = "button" style="background-color: red"> Delete Zone </a>
-      </div>
+        <br>
+        <form method="POST" action="/zone_add_db">
+          <label for="name">New Zone Name:</label><br>
+          <input type="text" id="name" name="name"><br><br>
+          {% for i in locks %}
+          <input type="checkbox" id="{{i.lock_name}}" name="checkbox" value="{{i.lock_name}}">
+          <label for="{{i.lock_name}}">{{i.lock_name}}</label><br>
+          {% endfor %}
+          <input type="submit" value="Submit"><br><br>
+          </form>
     </div>
     <!-- /#page-content-wrapper -->
 

@@ -99,5 +99,30 @@ def device_delete_db():
 	db.session.commit()
 	return redirect(url_for("all_locks"))
 
+@app.route('/Add_zone')
+def Add_zone():
+	locks=Lock.query.all()
+	return render_template("add_zone.html", title = "Add Zone",locks = locks)
+
+@app.route('/zone_add_db', methods=['POST'])
+def zone_add_db():
+	new_zone_name = request.form.get('name')
+	new_zone_locks = request.form.getlist("checkbox")
+	new_zone_locks_indeces = []
+	for i in new_zone_locks:
+		lock = Lock.query.filter_by(lock_name =i).first()
+		print(lock)
+		new_zone_locks_indeces.append(lock.id)
+	print(new_zone_locks_indeces)
+	update_lock_zones(new_zone_locks_indeces)
+	new_zone = Zone(zone_name=new_zone_name)
+	print(new_zone)
+	return redirect(url_for("zones"))
+
+def update_lock_zones(new_zone_locks_indeces):
+	for i in new_zone_locks_indeces:
+		update_lock = Lock.query.filter_by(id = i)
+		print(update_lock)
+
 if __name__=='__main__':
 	app.run(debug=True)
