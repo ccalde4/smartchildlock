@@ -38,7 +38,7 @@
     <div id="page-content-wrapper">
 
       <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-        <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
+        <button class="btn btn-primary" id="menu-toggle" style= "background-color:black">Menu</button>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -120,7 +120,7 @@
         <th>Zone</th>
           {% for schedule in schedules%}
           <tr>
-            <td><a href = "schedule" class= "button"> {{schedule.schedule_name}}</a></td>
+            <td><a href = "{{url_for('Edit_schedule', e_schedule = schedule.schedule_name)}}"> {{schedule.schedule_name}}</a></td>
             <td><a href = "schedule" class= "button">{{schedule.date}}</a></td>
             <td><a href = "schedule" class= "button">{{schedule.time}}</a></td>
             <td><a href = "schedule" class = "button">{{zones[schedule.zone_id-1]}}</a></td>

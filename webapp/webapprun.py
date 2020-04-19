@@ -54,7 +54,6 @@ def schedules():
 	zone_name = []
 	for i in zones:
 		zone_name.append(i.zone_name)
-	print(zone_name)
 	return render_template("schedules.html", title = 'All Schedules', schedules = schedules, zones = zone_name)
 
 @app.route('/all_locks')
@@ -112,6 +111,7 @@ def Add_zone():
 def Delete_zone():
 	zones = Zone.query.all()
 	return render_template("delete_zone.html",title="Delete Zone", zones = zones)
+
 
 @app.route('/zone_add_db', methods=['POST'])
 def zone_add_db():
@@ -176,10 +176,97 @@ def Add_schedule():
 	zones = Zone.query.all()
 	return render_template("add_schedule.html", zones = zones)
 
-@app.route('/schedule_add_db', methods=['POST'])
-def schedule_add_db():
+@app.route('/Delete_schedule')
+def Delete_schedule():
+	schedules = Schedule.query.all()
+	return render_template("delete_schedule.html", schedules = schedules)
+
+@app.route('/Edit_schedule<string:e_schedule>')
+def Edit_schedule(e_schedule):
+	edit_schedule = Schedule.query.filter_by(schedule_name = e_schedule).first()
+	all_zones = Zone.query.all()
+	time = edit_schedule.time
+	time_list = time.split(" ",2)
+	start_time = time_list[0]
+	end_time = time_list[2]
+	return render_template("edit_schedule.html", title = "Edit Schedule",schedule = edit_schedule, zones = all_zones, start_time =start_time,end_time = end_time)
+
+@app.route('/schedule_edit_db', methods=['POST'])
+def schedule_edit_db():
+	new_schedule_name = request.form.get('name')
+	old_name = request.form.get('oldname')
+	days = []
+	if(request.form.get('monday')=='monday'):
+		days.append('Monday,')
+	if(request.form.get('tuesday')=='tuesday'):
+		days.append('Tuesday,')
+	if(request.form.get('wednesday')=='wednesday'):
+		days.append('Wednesday,')
+	if(request.form.get('thursday')=='thursday'):
+		days.append('Thursday,')
+	if(request.form.get('friday')=='friday'):
+		days.append('Friday,')
+	if(request.form.get('saturday')=='saturday'):
+		days.append('Saturday,')
+	if(request.form.get('sunday')=='sunday'):
+		days.append('Sunday,')
+	string_days = ''.join(days)
+	string_days=string_days[:-1]
+	schedule_start_time=request.form.get('start_time')
+	schedule_end_time=request.form.get('end_time')
+	new_schedule_time = schedule_start_time + " - " + schedule_end_time
+	zone = request.form.get('zone')
+	id_zone = Zone.query.filter_by(zone_name = zone).first()
+	update_id = id_zone.id
+	update_schedule = Schedule.query.filter_by(schedule_name = old_name).first()
+	print(update_schedule)
+	update_schedule.schedule_name=new_schedule_name
+	update_schedule.date = string_days
+	update_schedule.time = new_schedule_time
+	update_schedule.zone_id = update_id
+	db.session.commit()
 	return redirect(url_for("schedules"))
 
+@app.route('/schedule_add_db', methods=['POST'])
+def schedule_add_db():
+	new_schedule_name = request.form.get('name')
+	days = []
+	if(request.form.get('monday')=='monday'):
+		days.append('Monday,')
+	if(request.form.get('tuesday')=='tuesday'):
+		days.append('Tuesday,')
+	if(request.form.get('wednesday')=='wednesday'):
+		days.append('Wednesday,')
+	if(request.form.get('thursday')=='thursday'):
+		days.append('Thursday,')
+	if(request.form.get('friday')=='friday'):
+		days.append('Friday,')
+	if(request.form.get('saturday')=='saturday'):
+		days.append('Saturday,')
+	if(request.form.get('sunday')=='sunday'):
+		days.append('Sunday,')
+	string_days = ''.join(days)
+	string_days=string_days[:-1]
+	schedule_start_time=request.form.get('start_time')
+	schedule_end_time=request.form.get('end_time')
+	new_schedule_time = schedule_start_time + " - " + schedule_end_time
+	zone = request.form.get('zone')
+	id_zone = Zone.query.filter_by(zone_name = zone).first()
+	update_id = id_zone.id
+	new_schedule = Schedule(schedule_name = new_schedule_name, date = string_days,time=new_schedule_time, zone_id = update_id )
+	db.session.add(new_schedule)
+	db.session.commit()
+	return redirect(url_for("schedules"))
+
+@app.route('/schedule_delete_db', methods=['GET'])
+def schedule_delete_db():
+	print('******************************************')
+	delete_schedule = request.args.get('schedule','')
+	print(delete_schedule)
+	to_delete = Schedule.query.filter_by(schedule_name = delete_schedule).first()
+	db.session.delete(to_delete)
+	db.session.commit()
+	return redirect(url_for("schedules"))
 
 
 def update_lock_zones(new_zone_locks, new_zone):

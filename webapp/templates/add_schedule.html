@@ -38,7 +38,7 @@
     <div id="page-content-wrapper">
 
       <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-        <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
+        <button class="btn btn-primary" id="menu-toggle" style= "background-color:black">Menu</button>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -69,47 +69,37 @@
 
       <div class="container-fluid">
         <style>
-          .weekDays-selector input {
-    display: none!important;
-  }
 
-  .weekDays-selector input[type=checkbox] + label {
-    display: inline-block;
-    border-radius: 6px;
-    background: #dddddd;
-    height: 40px;
-    width: 30px;
-    margin-right: 3px;
-    line-height: 40px;
-    text-align: center;
-    cursor: pointer;
-  }
-
-  .weekDays-selector input[type=checkbox]:checked + label {
-    background: black;
-    color: #ffffff;
-  }
-          </style>
+        </style>
         <br>
         <form method="POST" action="/schedule_add_db">
-          <label for="name">New Schedule Name:</label><br>
-          <input type="text" id="name" name="name"><br><br>
-          <div class="weekDays-selector">
-    <input type="checkbox" id="weekday-mon" class="weekday" />
-    <label for="weekday-mon">M</label>
-    <input type="checkbox" id="weekday-tue" class="weekday" />
-    <label for="weekday-tue">Tu</label>
-    <input type="checkbox" id="weekday-wed" class="weekday" />
-    <label for="weekday-wed">W</label>
-    <input type="checkbox" id="weekday-thu" class="weekday" />
-    <label for="weekday-thu">Th</label>
-    <input type="checkbox" id="weekday-fri" class="weekday" />
-    <label for="weekday-fri">F</label>
-    <input type="checkbox" id="weekday-sat" class="weekday" />
-    <label for="weekday-sat">Sat</label>
-    <input type="checkbox" id="weekday-sun" class="weekday" />
-    <label for="weekday-sun">Sun</label>
-  </div>
+          <label for="name">New Schedule Name:</label>
+          <input type="text" id="name" name="name"><br>
+  <label for="time">Start Time:</label>
+  <input type="time" id="start_time" name="start_time" min="00:00" max="24:00">
+  <label for="time">End Time:</label>
+  <input type="time" id="end_time" name="end_time" min="00:00" max="24:00"><br>
+  <input type="checkbox" id="monday" name="monday" value="monday">
+  <label for="monday">Mon</label>
+  <input type="checkbox" id="tuesday" name="tuesday" value="tuesday">
+  <label for="tuesday">Tue</label>
+  <input type="checkbox" id="wednesday" name="wednesday" value="wednesday">
+  <label for="wednesday">Wed</label>
+  <input type="checkbox" id="thursday" name="thursday" value="thursday">
+  <label for="thursday">Thu</label>
+  <input type="checkbox" id="friday" name="friday" value="friday">
+  <label for="friday">Fri</label>
+  <input type="checkbox" id="saturday" name="saturday" value="saturday">
+  <label for="saturday">Sat</label>
+  <input type="checkbox" id="sunday" name="sunday" value="sunday">
+  <label for="sunday">Sun</label>
+  <br>
+  <select id="zone" name="zone">
+    {% for zone in zones %}
+      <option value="{{zone.zone_name}}">{{zone.zone_name}}</option>
+      {%endfor%}
+      </select>
+      <br>
           <input type="submit" value="Submit"><br><br>
           </form>
     </div>
