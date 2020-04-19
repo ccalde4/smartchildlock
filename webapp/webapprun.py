@@ -1,14 +1,14 @@
-from flask import Flask,redirect, url_for, render_template
+from flask import Flask,redirect, url_for, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 import json
 import requests
 import time
 import unidecode
 import datetime
-#from ../RadioControl import radio
 import sys
 sys.path.append("..")
 from dbschema import db, Lock, Zone, Person, Schedule
+#from RadioControl import radio, setup_lock, unlock_function
 
 app = Flask(__name__)
 
@@ -30,11 +30,17 @@ def homepage():
 
 @app.route('/unlock<string:lock>')
 def unlocked(lock):
-	print(lock)
-	lock_usage[lock]= lock_usage[lock]+1;
-	print(lock_usage)
+	#if(unlock_function(lock)):
 	locks = Lock.query.all()
+	j = 0;
+	for i in locks:
+		lock_names[j] = locks[j].lock_name
+		j= j+1
+	lock_usage[lock]= lock_usage[lock]+1
+	print(lock_usage)
 	return redirect(url_for("all_locks"))
+	#else
+		#return redirect(url_for("failed_to_add_html"))
 
 @app.route('/zones')
 def zones():
@@ -56,6 +62,42 @@ def all_locks():
 def schedule():
 	print("Schedule")
 
+@app.route('/Add_device')
+def Add_device():
+	return render_template("add_device.html")
+
+@app.route('/device_add_db', methods=['GET'])
+def device_add_db():
+	add_lock_name = request.args.get('name','')
+	new_lock = Lock(lock_name = add_lock_name.capitalize())
+	#if(setup_lock)
+	db.session.add(new_lock)
+	db.session.commit()
+	return redirect(url_for("all_locks"))
+	#else
+		#return redirect(url_for("failed_to_add"))
+
+@app.route('/failed_to_add')
+def failed_to_add():
+	return render_template("failed_to_add.html")
+
+@app.route('/failed_to_unlock')
+def failed_to_unlock():
+	return render_template("failed_to_unlock.html")
+
+@app.route('/Delete_device')
+def Delete_device():
+	locks = Lock.query.all()
+	return render_template("delete_device.html", title = "Delete Device",locks = locks )
+
+@app.route('/device_delete_db', methods=['GET'])
+def device_delete_db():
+	delete_lock_name=request.args.get('lock','')
+	delete_lock = Lock.query.filter_by(lock_name=delete_lock_name).first()
+	print(delete_lock)
+	db.session.delete(delete_lock)
+	db.session.commit()
+	return redirect(url_for("all_locks"))
 
 if __name__=='__main__':
 	app.run(debug=True)
