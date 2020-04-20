@@ -26,7 +26,8 @@ print(lock_usage)
 def homepage():
 	frequent_locks = sorted(lock_usage, key = lock_usage.get,reverse = True)[:3]
 	print(frequent_locks)
-	return render_template("index.html", title='Frequent Locks', frequent_locks=frequent_locks)
+	zones = Zone.query.all()
+	return render_template("index.html", title='Frequent Locks', frequent_locks=frequent_locks, zones = zones)
 
 @app.route('/unlock<string:lock>')
 def unlocked(lock):

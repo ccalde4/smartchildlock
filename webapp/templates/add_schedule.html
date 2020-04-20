@@ -76,7 +76,7 @@
           <label for="name">New Schedule Name:</label>
           <input type="text" id="name" name="name"><br>
   <label for="time">Start Time:</label>
-  <input type="time" id="start_time" name="start_time" min="00:00" max="24:00">
+  <input type="time" id="start_time" name="start_time" min="00:00" max="24:00"><br>
   <label for="time">End Time:</label>
   <input type="time" id="end_time" name="end_time" min="00:00" max="24:00"><br>
   <input type="checkbox" id="monday" name="monday" value="monday">
@@ -99,6 +99,7 @@
       <option value="{{zone.zone_name}}">{{zone.zone_name}}</option>
       {%endfor%}
       </select>
+      <br>
       <br>
           <input type="submit" value="Submit"><br><br>
           </form>

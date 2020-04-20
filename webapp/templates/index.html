@@ -82,7 +82,7 @@
           text-align: center;
           text-decoration: none !important;
           display: inline-block;
-          font-size: 14px;
+          font-size: 20px;
           margin: 4px 2px;
           cursor: pointer;
           outline: none;
@@ -105,6 +105,13 @@
           <li><a href = "{{url_for('unlocked',lock = i)}}" class = "button">{{i}}</a></li>
           {% endfor %}
         </ul>
+        <h2>Zones</h2>
+          <ul id = "zones" style="overflow:auto;">
+            {% for i in zones %}
+            <li style ="display:inline-block"><a href = "{{url_for('zone_unlock',zone=i.zone_name)}}" class = "button">{{i.zone_name}}</a>
+            {% endfor %}
+          </ul>
+
 
       </div>
     </div>

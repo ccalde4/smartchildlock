@@ -73,7 +73,7 @@
           <label for="name">New Zone Name:</label><br>
           <input type="text" id="name" name="name"><br><br>
           {% for i in locks %}
-          <input type="checkbox" id="{{i.lock_name}}" name="checkbox" value="{{i.lock_name}}">
+          <input type="checkbox" id="{{i.lock_name}}" name="checkbox" value="{{i.lock_name}}" style = "font-size:18px">
           <label for="{{i.lock_name}}">{{i.lock_name}}</label><br>
           {% endfor %}
           <input type="submit" value="Submit"><br><br>
