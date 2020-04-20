@@ -23,14 +23,29 @@ def main():
     now = datetime.now()
     time = now.strftime("%H:%M")
     print(time)
+    iterator = 0;
     for i in start_times:
         if(time == i):
-            schedule_start()
+            schedule_start(iterator, schedules,end_times)
+        iterator = iterator +1
     print("no start time matched time")
 
-def schedule_start():
+def schedule_start(iterator, schedules, end_times):
+    schedule = schedules[iterator]
+    zone = schedule.zone_id
+    locks = Lock.query.filter_by(zone_id = zone)
+    now = datetime.now()
+    time_str = now.strftime("%H:%M")
+    while (time_str !=end_times[iterator]):
+        for lock in locks:
+            lock_name = lock.lock_name
+            #unlock_function(lock_name)
+            print(lock_name)
+        now = datetime.now()
+        time_str = now.strftime("%H:%M")
+        time.sleep(8)
 
 
 while True:
     main()
-    time.sleep(60)
+    time.sleep(15)
