@@ -4,6 +4,8 @@ import spidev
 import RPi.GPIO as GPIO
 from lib_nrf24 import NRF24
 
+battery_levels = [0]*num_devices
+
 
 def init_radio():
     pipes=[[0xe8,0xe8,0xf0,0xf0,0xe1],[0xf0,0xf0,0xf0,0xf0,0xe1]]
@@ -32,6 +34,7 @@ def setup_lock(lock_name):
             return true
 
 def unlock_function(lock):
+    wakeup_locks()
     radio.setChannel(0x76)
     init_radio()
     radio_msg = list(lock)
@@ -45,3 +48,26 @@ def unlock_function(lock):
             return false
         else:
             return true
+    radio.startListening();
+    receivedMessage=[0]*32
+    if(radio.available())
+    {
+        battery_level_dev = radio.read(receivedMessage, sizeof(receivedMessage))
+        battery_levels[lock]=battery_level_dev
+        if(battery_level_dev < 3.2):
+            GPIO.setup(21, GPIO.out)
+            GPIO.output(21, GPIO.HIGH)
+            Lock_b=Lock.query.filter_by(lock_name = lock)
+            Lock_b.battery = "Low"
+    }
+
+
+def wakeup_locks():
+    GPIO.setup(23, GPIO.out)
+    GPIO.setup(24, GPIO.out)
+    GPIO.output(23, GPIO.HIGH)
+    GPIO.output(24, GPIO.HIGH)
+
+def sleep_locks():
+    GPIO.output(23, GPIO.LOW)
+    GPIO.output(24, GPIO.LOW)

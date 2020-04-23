@@ -77,7 +77,6 @@ def no_intent():
 
 @ask.intent("NewUserIntent", mapping={'name':'name'})
 def new_user(name):
-	return statement("You have successfully added Austin to authorized users")
 	try:
 		person = context.System.person.PersonId
 	except:
